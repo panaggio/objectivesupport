@@ -9,11 +9,10 @@
 #import "NSObject+JSONSerializableSupport.h"
 #import "NSDictionary+JSONSerializableSupport.h"
 #import "Serialize.h"
-#import "JSONFramework.h"
+#import "JSON.h"
 #import "ObjectiveSupport.h"
 
 @interface NSObject (JSONSerializableSupport_Private)
-+ (id) deserializeJSON:(id)jsonObject;
 - (NSString *) convertProperty:(NSString *)propertyName andClassName:(NSString *)className;
 @end
 
