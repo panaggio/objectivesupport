@@ -11,6 +11,7 @@
 #import "Serialize.h"
 #import "JSON.h"
 #import "ObjectiveSupport.h"
+#import "NSObject+Extensions.h"
 
 @interface NSObject (JSONSerializableSupport_Private)
 - (NSString *) convertProperty:(NSString *)propertyName andClassName:(NSString *)className;
@@ -78,10 +79,10 @@
 			if ([[objectPropertyNames allKeys] containsObject:propertyCamalized]) {
 				Class propertyClass = [self propertyClass:[objectPropertyNames objectForKey:propertyCamalized]];
 				if ([[NSDictionary class] isSubclassOfClass:propertyClass]) {
-					[result setValue:[jsonObject objectForKey:property] forKey:propertyCamalized];
+					[result setValue:[[jsonObject objectForKey:property]niledNull] forKey:propertyCamalized];
 				}
 				else {
-					[result setValue:[self deserializeJSON:[propertyClass deserializeJSON:[jsonObject objectForKey:property] asClass:propertyClass]] forKey:propertyCamalized];
+					[result setValue:[[self deserializeJSON:[propertyClass deserializeJSON:[jsonObject objectForKey:property] asClass:propertyClass]]niledNull] forKey:propertyCamalized];
 				}
 			}
 		}
@@ -103,6 +104,10 @@
 		}
 	}
 	else if ([jsonObject isKindOfClass:[NSDictionary class]]) {
+		// if dict has no keys
+		if ([(NSDictionary *)jsonObject allKeys].count == 0) {
+			return result;
+		}
 		//JSON object
 		//this assumes we are dealing with JSON in the form rails provides:
 		// {className : { property1 : value, property2 : {class2Name : {property 3 : value }}}}
@@ -122,7 +127,7 @@
 			NSString *propertyCamalized = [[self convertProperty:property andClassName:objectName] camelize];
 			if ([[objectPropertyNames allKeys]containsObject:propertyCamalized]) {
 				Class propertyClass = [self propertyClass:[objectPropertyNames objectForKey:propertyCamalized]];
-				[result setValue:[self deserializeJSON:[propertyClass deserialize:[properties objectForKey:property]]] forKey:propertyCamalized];
+				[result setValue:[[self deserializeJSON:[propertyClass deserialize:[properties objectForKey:property]]]niledNull] forKey:propertyCamalized];
 			}
 		}
 	}
