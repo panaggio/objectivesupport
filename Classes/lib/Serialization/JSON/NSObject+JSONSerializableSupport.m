@@ -108,6 +108,11 @@
 		if ([(NSDictionary *)jsonObject allKeys].count == 0) {
 			return result;
 		}
+		
+		if (![[[(NSDictionary *)jsonObject allValues] objectAtIndex:0] isKindOfClass:[NSDictionary class]]) {
+			return result;
+		}
+		
 		//JSON object
 		//this assumes we are dealing with JSON in the form rails provides:
 		// {className : { property1 : value, property2 : {class2Name : {property 3 : value }}}}
