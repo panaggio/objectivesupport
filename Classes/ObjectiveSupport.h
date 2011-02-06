@@ -7,4 +7,4 @@
 //
 
 #import "CoreSupport.h"
-#import "JSONSerializableSupport.h"
+#import "Serialization/JSONSerializableSupport.h"
